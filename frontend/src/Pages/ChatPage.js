@@ -12,9 +12,10 @@ const ChatPage = () => {
     }, [])
     return (
         <div>
-            {chats.map(chats => (
+            {/* {chats.map(chats => (
                 <div key={chats._id}>{chats.chatName}</div>
-            ))}
+            ))} */}
+            Hello
         </div>
     )
 }

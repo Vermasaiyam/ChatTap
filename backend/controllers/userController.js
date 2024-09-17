@@ -54,11 +54,27 @@ const authUser = expressAsyncHandler(async (req,res)=>{
     } else {
         res.status(401);
         throw new Error("Invalid Username or Password");
-    }
+    } 
+});
+
+// api/user?search=saiyam
+const allUsers = expressAsyncHandler(async (req, res)=>{
+    const keyword = req.query.search ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+    console.log(keyword);
     
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
 })
 
 module.exports = {
     registerUser,
     authUser,
+    allUsers
 }

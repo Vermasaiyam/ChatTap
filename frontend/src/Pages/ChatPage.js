@@ -6,7 +6,7 @@ import Chatbox from '../components/misc/Chatbox';
 import { Box } from '@chakra-ui/react';
 
 const ChatPage = () => {
-    const { user } = ChatState();
+    const { user } = ChatState() || {};
 
   return (
     <div style={{ width: "100%" }}>

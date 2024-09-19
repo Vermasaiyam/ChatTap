@@ -131,17 +131,17 @@ const Signup = () => {
 
   return (
     <VStack spacing='5px'>
-      <FormControl id="first-name" isRequired>
+      <FormControl idisplay="first-name" isRequired>
         <FormLabel>Name</FormLabel>
         <Input placeholder='Enter Your Name' onChange={(e) => setName(e.target.value)} />
       </FormControl>
 
-      <FormControl id="email" isRequired>
+      <FormControl idisplay="email" isRequired>
         <FormLabel>Email</FormLabel>
         <Input type={'email'} placeholder='Enter Your Email' onChange={(e) => setEmail(e.target.value)} />
       </FormControl>
 
-      <FormControl id="password" isRequired>
+      <FormControl idisplay="password" isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup>
           <Input type={show1 ? "text" : 'password'} placeholder='Enter Your Password' onChange={(e) => setPassword(e.target.value)} />
@@ -153,7 +153,7 @@ const Signup = () => {
         </InputGroup>
       </FormControl>
 
-      <FormControl id="confirmpassword" isRequired>
+      <FormControl idisplay="confirmpassword" isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup>
           <Input type={show2 ? "text" : 'password'} placeholder='Confirm Your Password' onChange={(e) => setConfirmpassword(e.target.value)} />
@@ -165,7 +165,7 @@ const Signup = () => {
         </InputGroup>
       </FormControl>
 
-      <FormControl id="pic" isRequired>
+      <FormControl idisplay="pic" isRequired>
         <FormLabel>Upload Your Picture</FormLabel>
         {/* <Input type={'file'} p={1.5} accept="image/*" onChange={(e) => postDetails(e.target.files[0])} /> */}
         <Input type={'file'} p={1.5} accept="image/*" />

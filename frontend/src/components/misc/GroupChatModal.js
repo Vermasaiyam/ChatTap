@@ -124,7 +124,7 @@ const GroupChatModal = ({ children }) => {
                     <ModalHeader
                         fontSize="35px"
                         fontFamily="Work sans"
-                        d="flex"
+                        display="flex"
                         justifyContent="center"
                     >
                         <Center>
@@ -132,7 +132,7 @@ const GroupChatModal = ({ children }) => {
                         </Center>
                     </ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody d="flex" flexDir="column" alignItems="center">
+                    <ModalBody display="flex" flexDir="column" alignItems="center">
                         <FormControl>
                             <Input
                                 placeholder="Chat Name"
@@ -147,7 +147,7 @@ const GroupChatModal = ({ children }) => {
                                 onChange={(e) => handleSearch(e.target.value)}
                             />
                         </FormControl>
-                        <Box w="100%" d="flex" flexWrap="wrap">
+                        <Box w="100%" display="flex" flexWrap="wrap">
                             {selectedUsers.map((u) => (
                                 <UserBadgeItem
                                     key={u._id}

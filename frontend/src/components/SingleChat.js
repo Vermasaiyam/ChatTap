@@ -9,6 +9,11 @@ import axios from 'axios';
 import './styles.css'
 import ScrollableChat from './ScrollableChat';
 
+import io from 'socket.io-client'
+
+const ENDPOINT = 'http://localhost:5000';
+var socket, connectedChatCompare
+
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -43,7 +48,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             setMessages(data);
             setLoading(false);
 
-            // socket.emit("join chat", selectedChat._id);
+            socket.emit("join chat", selectedChat._id);
         } catch (error) {
             toast({
                 title: "Error Occured!",
@@ -58,7 +63,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     useEffect(()=>{
         fetchMessages();
+        selectedChatCompare = selectedChat;
     }, [selectedChat]);
+
+    useEffect(()=>{
+        socket.on('message recieved', (newMessageRecieved)=>{
+            
+        })
+    });
 
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
@@ -95,6 +107,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     };
+
+    useEffect(()=>{
+        socket = io(ENDPOINT);
+        socket.emit('setup', user);
+        socket.on('connection', ()=>{
+            setSocketConnected(true);
+        })
+    }, [])
 
     const typingHandler = (e) => {
         setNewMessage(e.target.value);

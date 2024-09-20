@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, Flex, DrawerHeader, DrawerOverlay, HStack, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
-import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, Flex, DrawerHeader, DrawerOverlay, HStack, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { BellIcon, ChevronDownIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import React, { useState } from 'react'
 import { ChatState } from '../../Context/ChatProvider';
 import ProfileModal from './ProfileModal';
@@ -21,6 +21,7 @@ const SideDrawer = () => {
 
     const history = useHistory();
     const toast = useToast();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -95,6 +96,9 @@ const SideDrawer = () => {
         }
     };
 
+    const bg = useColorModeValue('white', '#121212')
+    const bg1 = useColorModeValue('white', '#222222')
+    const color = useColorModeValue('black', 'white')
 
     return (
 
@@ -103,7 +107,9 @@ const SideDrawer = () => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                bg="white"
+                // bg="white"
+                bg={bg}
+                color={color}
                 w="100%"
                 p="5px 10px 5px 10px"
                 borderWidth="5px"
@@ -116,10 +122,15 @@ const SideDrawer = () => {
                         </Text>
                     </Button>
                 </Tooltip>
-                <Text fontSize="2xl" fontFamily="Work sans">
+                <Text fontSize="2xl" fontFamily="Work sans" color={color}>
                     ChatTap
                 </Text>
                 <div>
+                    <Button onClick={toggleColorMode}>
+                        {colorMode === 'light' ? <MoonIcon fontSize="xl" m={1} /> : <SunIcon fontSize="xl" m={1} />}
+                        {/* Toggle {colorMode === 'light' ? 'Dark' : 'Light'} */}
+                    </Button>
+
                     <Menu>
                         <MenuButton p={1}>
                             <NotificationBadge
@@ -147,7 +158,7 @@ const SideDrawer = () => {
                         </MenuList>
                     </Menu>
                     <Menu>
-                        <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
+                        <MenuButton as={Button} bg={bg1} rightIcon={<ChevronDownIcon color={color} />}>
                             <Avatar
                                 size="sm"
                                 cursor="pointer"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { Box, Flex, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, FormControl, IconButton, Input, Spinner, Text, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import ProfileModal from './misc/ProfileModal';
 import { getSender, getSenderFull } from '../config/chatLogics';
@@ -24,6 +24,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [typing, setTyping] = useState(false);
     const [istyping, setIsTyping] = useState(false);
     const toast = useToast();
+
+
+
+    const { colorMode, toggleColorMode } = useColorMode();
+
 
     const defaultOptions = {
         loop: true,
@@ -71,8 +76,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             });
         }
     }
-
-
 
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
@@ -179,6 +182,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }, timerLength);
     };
 
+    
+    const bg = useColorModeValue('white', '#111B21')
+    const bg1 = useColorModeValue('#E8E8E8', '#212121')
+    const bg2 = useColorModeValue('#E0E0E0', '#2A2F32')
+    const bg3 = useColorModeValue('#38B2AC', 'gray')
+    const color = useColorModeValue('black', 'white')
+
+
 
     return (
         <>
@@ -224,7 +235,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         flexDir="column"
                         justifyContent="flex-end"
                         p={3}
-                        bg="#E8E8E8"
+                        // bg="#E8E8E8"
+                        bg={bg1}
                         w="100%"
                         h="100%"
                         borderRadius="lg"
@@ -264,7 +276,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             )}
                             <Input
                                 variant="filled"
-                                bg="#E0E0E0"
+                                // bg="#E0E0E0"
+                                bg={bg2}
+                                color={color}
                                 placeholder="Enter a message.."
                                 value={newMessage}
                                 onChange={typingHandler}

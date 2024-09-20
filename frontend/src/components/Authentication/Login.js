@@ -1,8 +1,9 @@
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { ChatState } from '../../Context/ChatProvider'
+import { css } from '@emotion/react';
 
 const Login = () => {
 
@@ -15,6 +16,14 @@ const Login = () => {
 
   const { setUser } = ChatState();
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
+
+  const bg = useColorModeValue('white', '#111B21')
+  const bg1 = useColorModeValue('white', '#212121')
+  const bg2 = useColorModeValue('white', '#2A2F32')
+  const bg3 = useColorModeValue('#38B2AC', 'gray')
+  const color = useColorModeValue('black', 'white')
 
 
   const handleClick = () => setShow(!show);
@@ -72,11 +81,19 @@ const Login = () => {
 
 
   return (
-    <VStack spacing='5px'>
+    <VStack spacing='5px' bg={'white'} color={'black'}>
 
       <FormControl idisplay="email" isRequired>
         <FormLabel>Email</FormLabel>
-        <Input type={'email'} placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input
+          variant="outline"
+          color={'black'}
+          bg={'white'}
+          type={'email'}
+          placeholder='Enter Your Email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          />
       </FormControl>
 
       <FormControl idisplay="password" isRequired>

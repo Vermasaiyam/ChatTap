@@ -34,7 +34,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
     };
 
-    const { selectedChat, setSelectedChat, user } = ChatState();
+    const { selectedChat, setSelectedChat, user, notification, setNotification } = ChatState();
 
 
     const fetchMessages = async () => {
@@ -126,6 +126,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         selectedChatCompare = selectedChat;
     }, [selectedChat]);
 
+    console.log(notification, '-----');
+
 
     useEffect(() => {
         socket.on("message recieved", (newMessageRecieved) => {
@@ -137,6 +139,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 //     setNotification([newMessageRecieved, ...notification]);
                 //     setFetchAgain(!fetchAgain);
                 // }
+                // Check if the message from the same user already exists
+                const isDuplicate = notification.some(
+                    (msg) =>
+                        msg._id === newMessageRecieved._id || // Check for duplicate message by ID
+                        (msg.sender._id === newMessageRecieved.sender._id && msg.chat._id === newMessageRecieved.chat._id)
+                );
+
+                if (!isDuplicate) {
+                    setNotification([newMessageRecieved, ...notification]);
+                    setFetchAgain(!fetchAgain);
+                }
             } else {
                 setMessages([...messages, newMessageRecieved]);
             }

@@ -65,8 +65,8 @@ const Signup = () => {
     }
   }
 
-  const submitHandler = async () => { 
-    setLoading(true);
+  const submitHandler = async () => {
+    // setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
         title: "Please Fill all the Feilds",
@@ -75,7 +75,7 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false);
+      // setPicLoading(false);
       return;
     }
     if (password !== confirmpassword) {
@@ -114,7 +114,7 @@ const Signup = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      setLoading(false);
+      // setPicLoading(false);
       history.push("/chats");
     } catch (error) {
       toast({
@@ -125,9 +125,9 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false);
+      // setPicLoading(false);
     }
-  }
+  };
 
   return (
     <VStack spacing='5px'>

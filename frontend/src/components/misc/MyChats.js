@@ -67,7 +67,7 @@ const MyChats = ({fetchAgain}) => {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                    <Text>My Chats</Text>
+                    <Text fontSize={{ base: "38px", md: "25px", lg: "38px" }}>My Chats</Text>
                     <Spacer />
                     <GroupChatModal>
                         <Button

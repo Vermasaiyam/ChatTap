@@ -27,6 +27,7 @@ const SideDrawer = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
+        toggleColorMode();
         history.push("/");
     };
 

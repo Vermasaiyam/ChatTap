@@ -1,13 +1,13 @@
 import { Avatar, Box, Text, Tooltip, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import ScrollableFeed from "react-scrollable-feed";
 import React from 'react'
-import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser, isFirstMessage, isFirstMessageBySender, isReceivedMessage } from '../config/chatLogics';
+import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser, isFirstMessage, isFirstMessageBySender, isReceivedMessage, formatTime } from '../config/chatLogics';
 import { ChatState } from '../Context/ChatProvider';
 
 
 const ScrollableChat = ({ messages }) => {
 
-  const { user } = ChatState();
+  const {selectedChat, setSelectedChat,  user } = ChatState();
   const { colorMode, toggleColorMode } = useColorMode();
 
 
@@ -53,10 +53,11 @@ const ScrollableChat = ({ messages }) => {
             >
               <Box display={'flex'} flexDirection={'column'}>
                 <Box>
-                  {isReceivedMessage(m, user._id) &&
+                  {selectedChat.isGroupChat &&
+                    isReceivedMessage(m, user._id) &&
                     (isFirstMessageBySender(messages, m, i) || isFirstMessage(messages, i, user._id)) &&
                     (
-                      <Tooltip label={m.sender.name} placement="top-start" cursor={'pointer'} hasArrow>
+                      <Tooltip label={`${m.sender.name} - ${formatTime(m.createdAt)}`} placement="top-start" cursor={'pointer'} hasArrow>
                         <Text fontSize='10px' color={color}>{m.sender.name}</Text>
                       </Tooltip>
                     )}

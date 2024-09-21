@@ -142,7 +142,7 @@ const MyChats = ({ fetchAgain }) => {
                                             cursor="pointer"
                                             mx={'2'}
                                             name={user.name}
-                                            src={user.pic}
+                                            src={chat.isGroupChat ? 'group_logo1.jpg' : user.pic}
                                         />
                                     </Box>
                                     <Box>

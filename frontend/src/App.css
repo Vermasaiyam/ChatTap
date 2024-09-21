@@ -1,12 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+
+/* Default styles for the app */
 .App {
   min-height: 100vh;
-  display: flex;
-  background-image: url("./background.png");
-  background-position: center;
   background-size: cover;
+  background-position: center;
 }
+
+/* Light mode background */
+.bg-light {
+  background-image: url('./bg_light.jpeg');
+}
+
+/* Dark mode background */
+.bg-dark {
+  background-image: url('./bg_dark.jpg');
+}
+
 
 ::-webkit-scrollbar {
   width: 0px;

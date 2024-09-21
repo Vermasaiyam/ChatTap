@@ -181,6 +181,37 @@ const addToGroup = asyncHandler(async (req, res) => {
     }
 });
 
+const deleteGroup = asyncHandler(async (req, res) => {
+    const { chatId } = req.body;
+
+  try {
+    // Find the chat by ID
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      return res.status(404).json({ message: 'Group not found!' });
+    }
+
+    // Ensure it's a group chat
+    if (!chat.isGroupChat) {
+      return res.status(400).json({ message: 'This is not a group chat!' });
+    }
+
+    // Remove the chat from all users in the group
+    await User.updateMany(
+      { _id: { $in: chat.users } },
+      { $pull: { chats: chatId } } // Assuming each user has a `chats` field holding their chat IDs
+    );
+
+    // Delete the chat itself
+    await Chat.findByIdAndDelete(chatId);
+
+    res.status(200).json({ message: 'Group deleted successfully!' });
+  } catch (error) {
+    console.error('Error deleting group:', error);
+    res.status(500).json({ message: 'Error deleting group!' });
+  }
+})
 
 module.exports = {
     accessChat,
@@ -189,4 +220,5 @@ module.exports = {
     renameGroup,
     addToGroup,
     removeFromGroup,
-  };
+    deleteGroup,
+};

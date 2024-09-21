@@ -1,5 +1,5 @@
 import { ViewIcon } from '@chakra-ui/icons';
-import { Box, Button, FormControl, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useState } from 'react'
 import UserBadgeItem from '../UserAvatar/UserBadgeItem';
 import UserListItem from '../UserAvatar/UserListItem';
@@ -31,7 +31,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       });
       return;
     }
-
+  
     try {
       setLoading(true);
       const config = {
@@ -39,23 +39,47 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.put(
-        `/api/chat/groupremove`,
-        {
-          chatId: selectedChat._id,
-          userId: user1._id,
-        },
-        config
-      );
-
-      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
-      setFetchAgain(!fetchAgain);
-      fetchMessages();
+  
+      // If the admin is leaving the group, delete the group for everyone
+      if (user1._id === selectedChat.groupAdmin._id) {
+        await axios.put(`/api/chat/deletegroup`, {
+          data: {
+            chatId: selectedChat._id,
+          },
+          headers: config.headers,
+        });
+  
+        toast({
+          title: "Group Deleted!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+  
+        setSelectedChat(null); // Group deleted, no selected chat
+        setFetchAgain(!fetchAgain);
+      } else {
+        // Remove other members
+        const { data } = await axios.put(
+          `/api/chat/groupremove`,
+          {
+            chatId: selectedChat._id,
+            userId: user1._id,
+          },
+          config
+        );
+  
+        user1._id === user._id ? setSelectedChat(null) : setSelectedChat(data);
+        setFetchAgain(!fetchAgain);
+        fetchMessages();
+      }
+  
       setLoading(false);
     } catch (error) {
       toast({
-        title: "Error Occured!",
-        description: error.response.data.message,
+        title: "Error Occurred!",
+        description: error.response?.data?.message || "Unknown error",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -63,8 +87,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       });
       setLoading(false);
     }
+  
     setGroupChatName("");
   };
+  
 
   const handleRename = async () => {
     if (!groupChatName) return;
@@ -208,12 +234,13 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
           <ModalCloseButton />
           <ModalBody display="flex" flexDir="column" alignItems="center">
+            <Text marginEnd={'10'}>Admin: {selectedChat.groupAdmin.name}</Text>
             <Box w="100%" display="flex" flexWrap="wrap" pb={3}>
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
                   key={u._id}
                   user={u}
-                  admin={selectedChat.groupAdmin}
+                  admin={selectedChat.groupAdmin.name}
                   handleFunction={() => handleRemove(u)}
                 />
               ))}

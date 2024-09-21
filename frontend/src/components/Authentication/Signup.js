@@ -1,7 +1,8 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import axios from 'axios'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
 
 const Signup = () => {
@@ -147,7 +148,7 @@ const Signup = () => {
           <Input type={show1 ? "text" : 'password'} placeholder='Enter Your Password' onChange={(e) => setPassword(e.target.value)} />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick1}>
-              {show1 ? "Hide" : "Show"}
+              {show1 ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -159,7 +160,7 @@ const Signup = () => {
           <Input type={show2 ? "text" : 'password'} placeholder='Confirm Your Password' onChange={(e) => setConfirmpassword(e.target.value)} />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick2}>
-              {show2 ? "Hide" : "Show"}
+              {show2 ? <ViewOffIcon /> : <ViewIcon />}
             </Button>
           </InputRightElement>
         </InputGroup>

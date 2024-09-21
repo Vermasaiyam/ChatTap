@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { ChatState } from '../../Context/ChatProvider'
 import { css } from '@emotion/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
 const Login = () => {
 
@@ -102,7 +103,7 @@ const Login = () => {
           <Input type={show ? "text" : 'password'} value={password} placeholder='Enter Your Password' onChange={(e) => setPassword(e.target.value)} />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+              {show ? <ViewOffIcon/> : <ViewIcon/> }
             </Button>
           </InputRightElement>
         </InputGroup>

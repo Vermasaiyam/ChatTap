@@ -73,8 +73,14 @@ const allUsers = expressAsyncHandler(async (req, res)=>{
     res.send(users);
 })
 
+const fetchAllUsers = expressAsyncHandler(async (req, res)=>{
+    const users = await User.find({});
+    res.send(users);
+})
+
 module.exports = {
     registerUser,
     authUser,
-    allUsers
+    allUsers,
+    fetchAllUsers,
 }

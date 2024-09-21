@@ -16,6 +16,9 @@ const SideDrawer = () => {
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState(false);
+    const [searchResult1, setSearchResult1] = useState([]);
+    const [loading1, setLoading1] = useState(false);
+    const [searchAttempted, setSearchAttempted] = useState(false);
 
     const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
 
@@ -27,7 +30,7 @@ const SideDrawer = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
-        if (colorMode !== 'light'){
+        if (colorMode !== 'light') {
             toggleColorMode();
         }
         history.push("/");
@@ -98,6 +101,33 @@ const SideDrawer = () => {
             });
         }
     };
+
+    const allUsers = async () => {
+        try {
+            setLoading1(true);
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+
+            const { data } = await axios.get(`/api/user/allUsers`, config);
+
+            setLoading1(false);
+            setSearchResult1(Array.isArray(data) ? data : []);
+        } catch (error) {
+            toast({
+                title: "Error Occured!",
+                description: "Failed to Load the Search Results",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom-left",
+            });
+        }
+    };
+    
 
     const bg = useColorModeValue('white', '#121212')
     const bg1 = useColorModeValue('white', '#222222')
@@ -185,19 +215,36 @@ const SideDrawer = () => {
                 <DrawerContent>
                     <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
                     <DrawerBody>
-                        <Box display="flex" pb={2}>
-                            <Input
-                                placeholder="Search by name or email"
-                                mr={2}
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <Button onClick={handleSearch}>Go</Button>
+                        <Box>
+                            <Box display="flex" pb={2}>
+                                <Input
+                                    placeholder="Search by name or email"
+                                    mr={2}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                                <Button onClick={handleSearch}>Go</Button>
+                            </Box>
+                            <Box>
+                                <Button variant="solid" colorScheme='blue' width="100%" onClick={allUsers}>All Users</Button>
+                            </Box>
                         </Box>
                         {loading ? (
                             <ChatLoading />
                         ) : (
                             searchResult?.map((user) => (
+                                <UserListItem
+                                    key={user._id}
+                                    user={user}
+                                    handleFunction={() => accessChat(user._id)}
+                                />
+                            ))
+                        )}
+
+                        {loading1 ? (
+                            <ChatLoading />
+                        ) : (
+                            searchResult1?.map((user) => (
                                 <UserListItem
                                     key={user._id}
                                     user={user}

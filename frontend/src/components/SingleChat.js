@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider';
-import { Box, Flex, FormControl, IconButton, Input, Spinner, Text, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, IconButton, Input, Spinner, Text, useColorMode, useColorModeValue, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import ProfileModal from './misc/ProfileModal';
 import { getSender, getSenderFull } from '../config/chatLogics';
@@ -10,6 +10,7 @@ import './styles.css'
 import ScrollableChat from './ScrollableChat';
 import Lottie from 'react-lottie'
 import animationData from '../animations/typing.json'
+import { IoSend } from "react-icons/io5";
 
 import io from 'socket.io-client'
 
@@ -100,6 +101,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
                 socket.emit("new message", data);
                 setMessages([...messages, data]);
+                
             } catch (error) {
                 toast({
                     title: "Error Occured!",
@@ -112,6 +114,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     };
+
+    const sendMessageUsingIcon = async () => {
+        socket.emit("stop typing", selectedChat._id);
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+            setNewMessage("");
+            const { data } = await axios.post(
+                "/api/message",
+                {
+                    content: newMessage,
+                    chatId: selectedChat,
+                },
+                config
+            );
+            // console.log(data);
+
+            socket.emit("new message", data);
+            setMessages([...messages, data]);
+        } catch (error) {
+            toast({
+                title: "Error Occured!",
+                description: "Failed to send the Message",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
+        }
+    }
 
     useEffect(() => {
         socket = io(ENDPOINT);
@@ -182,7 +218,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }, timerLength);
     };
 
-    
+
     const bg = useColorModeValue('white', '#111B21')
     const bg1 = useColorModeValue('#E8E8E8', '#212121')
     const bg2 = useColorModeValue('#E0E0E0', '#2A2F32')
@@ -274,15 +310,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             ) : (
                                 <></>
                             )}
-                            <Input
-                                variant="filled"
-                                // bg="#E0E0E0"
-                                bg={bg2}
-                                color={color}
-                                placeholder="Enter a message.."
-                                value={newMessage}
-                                onChange={typingHandler}
-                            />
+                            <Box display={'flex'}>
+                                <Input
+                                    variant="filled"
+                                    // bg="#E0E0E0"
+                                    bg={bg2}
+                                    color={color}
+                                    placeholder="Enter a message.."
+                                    value={newMessage}
+                                    onChange={typingHandler}
+                                />
+                                <Button bg={bg2} onClick={sendMessageUsingIcon}>
+                                    <IoSend size={30} />
+                                </Button>
+                            </Box>
                         </FormControl>
                     </Box>
                 </>

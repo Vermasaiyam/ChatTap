@@ -25,6 +25,7 @@ const ScrollableChat = ({messages}) => {
         messages.map((m, i) => (
           <div style={{ display: "flex" }} key={m._id}>
             {(isSameSender(messages, m, i, user._id) ||
+              // name of sender in group chat at first message
               isLastMessage(messages, i, user._id)) && (
               <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
                 <Avatar

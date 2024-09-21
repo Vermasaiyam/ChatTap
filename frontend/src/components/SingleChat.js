@@ -40,7 +40,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
     };
 
-    const { selectedChat, setSelectedChat, user, notification, setNotification } = ChatState();
+    const { selectedChat, setSelectedChat, user, notification, setNotification, chats, setChats } = ChatState();
 
 
     const fetchMessages = async () => {
@@ -97,11 +97,31 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     },
                     config
                 );
-                // console.log(data);
 
+
+                // const chatIndex = chats.findIndex((chat) => chat._id === selectedChat._id);
+
+                // if (chatIndex === -1) return; // If chat not found, return early
+
+                // // Create a new chat object with the updated message (or update chat as needed)
+                // const updatedChat = {
+                //     ...chats[chatIndex]
+                // };
+
+                // // Remove the chat from its current position
+                // const updatedChats = [...chats]; // Create a copy of the chats array
+                // updatedChats.splice(chatIndex, 1); // Remove the chat at chatIndex
+
+                // // Insert the updated chat at the top
+                // updatedChats.unshift(updatedChat);
+
+                // // Update the state with the new chats array
+                // setChats(updatedChats);
+
+                
                 socket.emit("new message", data);
                 setMessages([...messages, data]);
-                
+
             } catch (error) {
                 toast({
                     title: "Error Occured!",

@@ -24,6 +24,21 @@ export const isLastMessage = (messages, i, userId) => {
   );
 };
 
+export const isFirstMessage = (messages, i, userId) => {
+  return (
+    i === 0 && // Check if it's the first message
+    messages[0].sender._id !== userId && // Ensure the sender is not the logged-in user
+    messages[0].sender._id // Ensure the message has a valid sender
+  );
+};
+
+export const isFirstMessageBySender = (messages, m, i) => {
+  return i === 0 || messages[i - 1].sender._id !== m.sender._id;
+};
+
+// Check if the message is received
+export const isReceivedMessage = (m, userId) => m.sender._id !== userId;
+
 export const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
 

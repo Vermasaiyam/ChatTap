@@ -114,8 +114,11 @@ const SideDrawer = () => {
 
             const { data } = await axios.get(`/api/user/allUsers`, config);
 
+            console.log(data);
             setLoading1(false);
             setSearchResult1(Array.isArray(data) ? data : []);
+            console.log(searchResult1);
+            
         } catch (error) {
             toast({
                 title: "Error Occured!",

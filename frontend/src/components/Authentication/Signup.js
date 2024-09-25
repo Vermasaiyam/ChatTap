@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import imageTobase64 from '../../helpers/imageToBase64'
 
 
 const Signup = () => {
@@ -18,52 +19,22 @@ const Signup = () => {
   const toast = useToast();
   const history = useHistory();
 
+  // const navigate = useNavigate();
+
   const handleClick1 = () => setShow1(!show1);
   const handleClick2 = () => setShow2(!show2);
 
-  const postDetails = (pics) => {
-    setLoading(true);
-    if (pics === undefined) {
-      toast({
-        title: 'Account created.',
-        description: "We've created your account for you.",
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
-      return;
-    }
 
-    if (pics.type === "image/jpeg" || pics.type === "image/png") {
-      const data = new FormData();
-      data.append('file', pics);
-      data.append('upload_preset', "chat-app");
-      data.append('cloud_name', "dvx67vfvh");
-      fetch("https://api.cloudinary.com/v1_1/dvx67vfvh/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setPic(data.url.toString());
-          console.log(data.url.toString());
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-    } else {
-      toast({
-        title: "Please Select an Image!",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      setLoading(false);
-      return;
-    }
+  const handleUploadPic = async (e) => {
+    const file = e.target.files[0]
+
+    console.log('file', file);
+
+
+    const imagePic = await imageTobase64(file);
+
+    setPic(imagePic);
+
   }
 
   const submitHandler = async () => {
@@ -115,6 +86,7 @@ const Signup = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      
       // setPicLoading(false);
       history.push("/chats");
     } catch (error) {
@@ -169,7 +141,7 @@ const Signup = () => {
       <FormControl idisplay="pic" isRequired>
         <FormLabel>Upload Your Picture</FormLabel>
         {/* <Input type={'file'} p={1.5} accept="image/*" onChange={(e) => postDetails(e.target.files[0])} /> */}
-        <Input type={'file'} p={1.5} accept="image/*" />
+        <Input type={'file'} p={1.5} accept="image/*" onChange={handleUploadPic}/>
       </FormControl>
 
       <Button colorScheme='blue' width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>

@@ -39,18 +39,6 @@ export const isFirstMessageBySender = (messages, m, i) => {
 // Check if the message is received
 export const isReceivedMessage = (m, userId) => m.sender._id !== userId;
 
-export const formatTime = (timestamp) => {
-  // Ensure the timestamp is a valid string or number
-  if (!timestamp) return "Invalid time";
-
-  const date = new Date(timestamp);
-
-  // Check if the date is valid
-  if (isNaN(date.getTime())) return "Invalid time";
-
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-
 export const isSameSenderMargin = (messages, m, i, userId) => {
   // console.log(i === messages.length - 1);
 
@@ -73,3 +61,5 @@ export const isSameSenderMargin = (messages, m, i, userId) => {
 export const isSameUser = (messages, m, i) => {
   return i > 0 && messages[i - 1].sender._id === m.sender._id;
 };
+
+

@@ -7,7 +7,7 @@ const router = express.Router();
 // protect function is for checking that user is authorized for this functionalities or not
 router.route('/').post(registerUser).get(protect,allUsers);
 router.post('/login', authUser);
-router.post('/allUsers', fetchAllUsers);
+router.get('/allUsers', fetchAllUsers);
 
 
 module.exports = router;

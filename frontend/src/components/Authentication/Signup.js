@@ -88,7 +88,15 @@ const Signup = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       
       // setPicLoading(false);
-      history.push("/chats");
+      history.push("/");
+      toast({
+        title: "Switch to login section to continue.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
     } catch (error) {
       toast({
         title: "Error Occured!",

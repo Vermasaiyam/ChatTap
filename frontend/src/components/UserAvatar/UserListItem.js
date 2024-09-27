@@ -1,12 +1,17 @@
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
+import { Avatar, Box, Flex, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 
 const UserListItem = ({ user, handleFunction }) => {
+    const { colorMode, toggleColorMode } = useColorMode();
+    
+    const bg2 = useColorModeValue('#E8E8E8', '#2A2F32');
+    const bg3 = useColorModeValue('#38B2AC', 'gray');
+
     return (
         <Box
             onClick={handleFunction}
             cursor="pointer"
-            bg="#E8E8E8"
+            bg={bg2}
             _hover={{
                 background: "#38B2AC",
                 color: "white",

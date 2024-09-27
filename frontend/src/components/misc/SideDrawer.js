@@ -45,6 +45,9 @@ const SideDrawer = () => {
                 isClosable: true,
                 position: "top-left",
             });
+            setSearchResult([]);
+            setLoading(false);
+            // setSearchResult1([]);
             return;
         }
 
@@ -61,6 +64,7 @@ const SideDrawer = () => {
 
             setLoading(false);
             setSearchResult(data);
+            setSearchResult1([]);
         } catch (error) {
             toast({
                 title: "Error Occured!",
@@ -225,7 +229,10 @@ const SideDrawer = () => {
                                     placeholder="Search by name or email"
                                     mr={2}
                                     value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    onChange={(e) => {
+                                        // handleSearch();
+                                        setSearch(e.target.value);
+                                    }}
                                 />
                                 <Button onClick={handleSearch}>Go</Button>
                             </Box>

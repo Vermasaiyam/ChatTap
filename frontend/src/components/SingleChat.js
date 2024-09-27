@@ -121,6 +121,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 
                 socket.emit("new message", data);
                 setMessages([...messages, data]);
+                fetchAgain();
 
             } catch (error) {
                 toast({
@@ -157,6 +158,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
             socket.emit("new message", data);
             setMessages([...messages, data]);
+            fetchAgain();
+
         } catch (error) {
             toast({
                 title: "Error Occured!",

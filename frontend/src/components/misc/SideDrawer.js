@@ -93,6 +93,7 @@ const SideDrawer = () => {
             console.log(data);
             setLoading1(false);
             setSearchResult1(Array.isArray(data) ? data : []);
+            setSearchResult([]);
             console.log(searchResult1);
             
         } catch (error) {
